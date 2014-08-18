@@ -1,33 +1,75 @@
 var socket = require('socket.io')
     , http = require('http')
     , express = require('express')
+    , path = require('path')
     , port = process.env.PORT || 8080
     , app = express();
 
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('views', __dirname + '/views');
+app.use("../stylesheets", express.static(__dirname + "/stylesheets"));
+app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+
+app.get('/', function(req, res) {
+  res.render('index');
+});
+
 var server = http.createServer(app)
-    , io = socket.listen(server);
+    , io = socket.listen(server)
+    , usernames = {};
 
 function openClientConnection() {
-    io.socket.on('connection', function(client) {
-        messageListener(client);
-        client.on('join', function() {
+  io.sockets.on('connection', function(client) {
+    console.log('server is connected...')
+    var addedUser = false;
+    assignName(client);
+    messageListener(client);
+    disconnectHandler(client);
+  });
+}
 
-        });
-    });
+function assignName(client) {
+  client.on('join', function(name) {
+    console.log(name + " has joined");
+    addedUser = true;
+    client.username = name;
+    usernames[client.username] = name;
+    broadcastJoin(client);
+  });
+}
+
+function broadcastJoin(client) {
+  client.broadcast.emit('join', client.username);
+}
+
+function broadcastLeave(client) {
+  console.log(client.username + ' has left')
+  client.broadcast.emit('leave', client.username);
 }
 
 function messageListener(client) {
-    client.on('message', function(data) {
-        // var message = JSON.parse(data);
-        client.broadcast.emit('message', data);
-    });
+  client.on('message', function(message) {
+    var fullMessage = usernames[client.username] + ": " + message;
+    client.broadcast.emit('message', fullMessage);
+  });
+}
+
+function disconnectHandler(client) {
+  client.on('disconnect', function() {
+    if(addedUser) {
+      delete usernames[client.username];
+      broadcastLeave(client);
+    }
+  });
 }
 
 function listenToServer() {
-    server.listen(port);
+  server.listen(port);
 }
 
 (function() {
-    openClientConnection();
-    listenToServer();
+  console.log('Starting server...')
+  openClientConnection();
+  listenToServer();
 })();

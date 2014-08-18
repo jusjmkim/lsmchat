@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<title>LSM Chat</title>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/client.js"></script>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
+	</head>
+
+	<body>
+    <div class="container">
+      <h1>Welcome to LSM!</h1>
+      <div id="members">
+
+      </div>
+
+      <div id="chatbox">
+
+        <div id="chat-text"></div>
+
+        <form method="POST" action="#">
+          <input type="text" id="message">
+          <input type="submit" id="submit" value="Send">
+        </form>
+
+      </div>
+    </div>
+	</body>
+</html>
