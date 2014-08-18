@@ -7,11 +7,12 @@
   },
   "dependencies": {
     "express": "~4.2.0",
-    "socket.io": "1.0.6"
+    "socket.io": "1.0.6",
+    "ejs": "~1.0.0",
+    "indexof": "~0.0.1"
   },
   "engines": {
     "node": "~0.10.30",
-    "npm": "1.4.22",
-    "ejs": "~1.0.0"
+    "npm": "1.4.22"
   }
 }
