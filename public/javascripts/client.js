@@ -1,4 +1,4 @@
-var server = io.connect('http://localhost:8080');
+var server = io.connect(window.location.hostname);
 
 function assignName() {
   server.on('connect', function() {
