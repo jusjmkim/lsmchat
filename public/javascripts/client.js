@@ -48,18 +48,21 @@ function displayOwnMessage(message) {
 
 function displayMessage(message) {
   var $chatText = $("#chat-text");
-  $chatText.append(ptagify(message));
+  $chatText.append(ptagifyMessage(message));
 }
 
 function newMemberListener() {
-  server.on('join', function(name) {
+  server.on('newJoin', function(name) {
+    var $member = $("#members h3");
     displayMessage(name + " has joined");
+    addNewMember($member, name);
   });
 }
 
 function memberLeaveListener() {
   server.on('leave', function(name) {
     displayMessage(name + " has left");
+    removeMember(name);
   });
 }
 
@@ -75,8 +78,33 @@ function scrapeUsername() {
   return $("#username").text();
 }
 
-function ptagify(message) {
+function ptagifyMessage(message) {
   return "<p>" + message + "</p>";
+}
+
+function ptagifyMember(username) {
+  return "<p id='" + normalize(username) + "'>" + username + "</p>";
+}
+
+function populateMembers() {
+  var $member = $("#members h3");
+  server.on('join', function(usernames) {
+    for (var username in usernames) {
+      addNewMember($member, username);
+    }
+  });
+}
+
+function addNewMember($member, username) {
+  $member.after(ptagifyMember(username));
+}
+
+function removeMember(username) {
+  $("#" + normalize(username)).remove();
+}
+
+function normalize(name) {
+  return name.split(" ").join("-");
 }
 
 $(function() {
@@ -84,6 +112,7 @@ $(function() {
   generateUser();
   newMemberListener();
   memberLeaveListener();
+  populateMembers();
 	submitListener();
 	messageListener();
 });

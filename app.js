@@ -23,24 +23,33 @@ function openClientConnection() {
   io.sockets.on('connection', function(client) {
     console.log('server is connected...')
     var addedUser = false;
-    assignName(client);
+    newUser(client);
     messageListener(client);
     disconnectHandler(client);
   });
 }
 
-function assignName(client) {
+function newUser(client) {
   client.on('join', function(name) {
-    console.log(name + " has joined");
-    addedUser = true;
-    client.username = name;
-    usernames[client.username] = name;
+    assignName(client, name);
+    populateMembers(client);
     broadcastJoin(client);
   });
 }
 
+function assignName(client, name) {
+  console.log(name + " has joined");
+  addedUser = true;
+  client.username = name;
+  usernames[client.username] = name;
+}
+
+function populateMembers(client) {
+  client.emit('join', usernames);
+}
+
 function broadcastJoin(client) {
-  client.broadcast.emit('join', client.username);
+  client.broadcast.emit('newJoin', client.username);
 }
 
 function broadcastLeave(client) {
