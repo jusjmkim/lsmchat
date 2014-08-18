@@ -3,6 +3,30 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+#chatbox {
+}
+
+#chat-text {
+  height: 400px;
+  border-style: solid;
+  border-color: #eeeeee;
+  margin: 10px;
+}
+
+#send-message {
+  margin: 0 auto;
+}
+
+#message {
+  height: 3em;
+  width: 30em;
+}
+
+h1 {
+  width: 30%;
+  margin: 0 auto;
+}
+
+footer {
+  margin: 50px 0;
 }
