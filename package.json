@@ -8,8 +8,7 @@
   "dependencies": {
     "express": "~4.2.0",
     "socket.io": "1.0.6",
-    "ejs": "~1.0.0",
-    "indexof": "~0.0.1"
+    "ejs": "~1.0.0"
   },
   "engines": {
     "node": "~0.10.30",
