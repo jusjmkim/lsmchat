@@ -112,12 +112,21 @@ function normalize(name) {
   return name.split(" ").join("-");
 }
 
+function populateChat() {
+  server.on('chatMessages', function(chatMessages) {
+    chatMessages.forEach(function(message) {
+      displayMessage(message['chat']);
+    });
+  });
+}
+
 $(function() {
   assignName();
   generateUser();
   newMemberListener();
   memberLeaveListener();
   populateMembers();
+  populateChat();
 	submitListener();
 	messageListener();
 });

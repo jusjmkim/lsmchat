@@ -6,7 +6,10 @@ var socket = require('socket.io')
     , app = express()
     , mongo = require('mongodb')
     , monk = require('monk')
-    , db = monk('localhost:27017/lsmchat');
+    , db = monk('localhost:27017/lsmchat')
+    , chats = db.get('chats');
+
+require('locus');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', __dirname + '/views');
@@ -42,6 +45,7 @@ function newUser(client) {
     assignName(client, name);
     populateMembers(client);
     broadcastJoin(client);
+    populateChat(client);
   });
 }
 
@@ -58,13 +62,13 @@ function populateMembers(client) {
 
 function broadcastJoin(client) {
   client.broadcast.emit('newJoin', client.username);
-  persistMessage(client.username);
+  persistMessage(spanify(client.username + ' has joined'));
 }
 
 function broadcastLeave(client) {
   console.log(client.username + ' has left');
   client.broadcast.emit('leave', client.username);
-  persistMessage(client.username);
+  persistMessage(spanify(client.username + ' has left'));
 }
 
 function messageListener(client) {
@@ -85,14 +89,18 @@ function disconnectHandler(client) {
 }
 
 function persistMessage(message) {
-  // db.chats.insert({'chat': message});
+  db.collections.chats.insert({'chat': message});
 }
 
-function createDatabase() {
-  if (typeof db.chats === "undefined") {
-    console.log(db);
-    // db.createCollection('chats', {capped: true, max: 1000});
-  }
+function spanify(message) {
+  return "<span class='enter-leave'>" + message + "</span>";
+}
+
+function populateChat(client) {
+  // console.log(chats.find());
+  chats.find().success(function(chat) {
+    client.emit('chatMessages', chat);
+  });
 }
 
 function listenToServer() {
@@ -101,7 +109,6 @@ function listenToServer() {
 
 (function() {
   console.log('Starting server...');
-  // createDatabase();
   openClientConnection();
   listenToServer();
 })();
