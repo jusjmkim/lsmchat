@@ -54,14 +54,14 @@ function displayMessage(message) {
 function newMemberListener() {
   server.on('newJoin', function(name) {
     var $member = $("#members h3");
-    displayMessage(name + " has joined");
+    displayMessage(spanify(name + " has joined"));
     addNewMember($member, name);
   });
 }
 
 function memberLeaveListener() {
   server.on('leave', function(name) {
-    displayMessage(name + " has left");
+    displayMessage(spanify(name + " has left"));
     removeMember(name);
   });
 }
@@ -84,6 +84,10 @@ function ptagifyMessage(message) {
 
 function ptagifyMember(username) {
   return "<p id='" + normalize(username) + "'>" + username + "</p>";
+}
+
+function spanify(message) {
+  return "<span class='enter-leave'>" + message + "</span>";
 }
 
 function populateMembers() {

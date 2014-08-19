@@ -1,30 +1,60 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
-#chatbox {
+  padding-top: 35px;
+  font: 2em 'Lato', "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #2c3e50;
+  color: #aaa;
 }
 
 #chat-text {
   height: 400px;
   border-style: solid;
-  border-color: #eeeeee;
+  border-color: #eee;
   margin: 10px;
+  background-color: white;
+  color: black;
+  overflow: auto;
 }
 
 #send-message {
-  margin: 0 auto;
+  width: 100%;
+  color: black;
+}
+
+#message-form {
+  width: 70%;
+  margin-left: 2em;
+  margin-right: 2em;
 }
 
 #message {
-  height: 3em;
-  width: 30em;
+  height: 2.5em;
+  width: 20em;
+  margin-right: 10px;
+}
+
+#members {
+  font-size: 1.2em;
+  overflow: auto;
 }
 
 h1 {
-  width: 30%;
+  width: 40%;
   margin: 0 auto;
+  font-size: 3em;
+}
+
+h2 {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.lead {
+  font-size: 1.5em;
+}
+
+.enter-leave {
+  font-size: 1em;
+  color: #aaa;
 }
 
 footer {
