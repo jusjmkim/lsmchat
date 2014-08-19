@@ -9,18 +9,11 @@ var socket = require('socket.io')
     , db = monk('localhost:27017/lsmchat')
     , chats = db.get('chats');
 
-require('locus');
-
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', __dirname + '/views');
 app.use("../stylesheets", express.static(__dirname + "/stylesheets"));
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
-
-// app.use(function(req, res, next) {
-//   req.db = db;
-//   next();
-// });
 
 app.get('/', function(req, res) {
   res.render('index');
@@ -97,7 +90,6 @@ function spanify(message) {
 }
 
 function populateChat(client) {
-  // console.log(chats.find());
   chats.find().success(function(chat) {
     client.emit('chatMessages', chat);
   });
