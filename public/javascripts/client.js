@@ -49,6 +49,7 @@ function displayOwnMessage(message) {
 function displayMessage(message) {
   var $chatText = $("#chat-text");
   $chatText.append(ptagifyMessage(message));
+  $chatText.scrollTop($chatText[0].scrollHeight);
 }
 
 function newMemberListener() {
