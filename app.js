@@ -3,13 +3,21 @@ var socket = require('socket.io')
     , express = require('express')
     , path = require('path')
     , port = process.env.PORT || 8080
-    , app = express();
+    , app = express()
+    , mongo = require('mongodb')
+    , monk = require('monk')
+    , db = monk('localhost:27017/lsmchat');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', __dirname + '/views');
 app.use("../stylesheets", express.static(__dirname + "/stylesheets"));
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
+
+// app.use(function(req, res, next) {
+//   req.db = db;
+//   next();
+// });
 
 app.get('/', function(req, res) {
   res.render('index');
@@ -50,17 +58,20 @@ function populateMembers(client) {
 
 function broadcastJoin(client) {
   client.broadcast.emit('newJoin', client.username);
+  persistMessage(client.username);
 }
 
 function broadcastLeave(client) {
-  console.log(client.username + ' has left')
+  console.log(client.username + ' has left');
   client.broadcast.emit('leave', client.username);
+  persistMessage(client.username);
 }
 
 function messageListener(client) {
   client.on('message', function(message) {
     var fullMessage = usernames[client.username] + ": " + message;
     client.broadcast.emit('message', fullMessage);
+    persistMessage(fullMessage);
   });
 }
 
@@ -73,12 +84,24 @@ function disconnectHandler(client) {
   });
 }
 
+function persistMessage(message) {
+  // db.chats.insert({'chat': message});
+}
+
+function createDatabase() {
+  if (typeof db.chats === "undefined") {
+    console.log(db);
+    // db.createCollection('chats', {capped: true, max: 1000});
+  }
+}
+
 function listenToServer() {
   server.listen(port);
 }
 
 (function() {
-  console.log('Starting server...')
+  console.log('Starting server...');
+  // createDatabase();
   openClientConnection();
   listenToServer();
 })();
