@@ -2,7 +2,7 @@ body {
   padding-top: 35px;
   font: 2em 'Lato', "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color: #34495e;
-  color: #aaa;
+  color: #ccc;
 }
 
 #chat-text {
@@ -54,7 +54,7 @@ h2 {
 
 .enter-leave {
   font-size: 1em;
-  color: #aaa;
+  color: #ccc;
 }
 
 footer {
