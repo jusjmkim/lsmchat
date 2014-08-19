@@ -72,7 +72,7 @@ function displayOwnName(name) {
 }
 
 function welcomeUser(name) {
-  return "<h2>Welcome <span id='username'>" + name + "</span>!</h2>";
+  return "<h2>Hey <span id='username'>" + name + "</span>!</h2>";
 }
 
 function scrapeUsername() {
