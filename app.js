@@ -4,9 +4,14 @@ var socket = require('socket.io')
     , path = require('path')
     , port = process.env.PORT || 8080
     , app = express()
-    , mongo = require('mongodb')
-    , monk = require('monk')
-    , db = monk('localhost:27017/lsmchat')
+    , mongo = require('mongodb');
+
+var mongoUri = process.env.MONGOLAB_URI ||
+    process.env.MONGOHQ_URL ||
+    'mongodb://localhost/lsmchat';
+
+var monk = require('monk')
+    , db = monk(mongoUri)
     , chats = db.get('chats');
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -82,7 +87,7 @@ function disconnectHandler(client) {
 }
 
 function persistMessage(message) {
-  db.collections.chats.insert({'chat': message});
+  chats.insert({'chat': message});
 }
 
 function spanify(message) {
