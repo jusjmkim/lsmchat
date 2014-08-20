@@ -24,13 +24,17 @@ function submitListener() {
 	var $message = $("#message");
 	$("#submit").click(function(e) {
     e.preventDefault();
-    var message = escapeHtml($message.val());
+    var message = trim(escapeHtml($message.val()));
     if (message.length > 0) { 
       $message.val("");
   		sendMessage(message);
       displayOwnMessage(message);
     }
 	});
+}
+
+function trim(message) {
+  return message.replace(/^\s+|\s+$/g, "");
 }
 
 function sendMessage(message) {
