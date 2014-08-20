@@ -25,9 +25,11 @@ function submitListener() {
 	$("#submit").click(function(e) {
     e.preventDefault();
     var message = $message.val();
-    $message.val("");
-		sendMessage(message);
-    displayOwnMessage(message);
+    if (message.length > 0) { 
+      $message.val("");
+  		sendMessage(message);
+      displayOwnMessage(message);
+    }
 	});
 }
 
