@@ -24,7 +24,7 @@ function submitListener() {
 	var $message = $("#message");
 	$("#submit").click(function(e) {
     e.preventDefault();
-    var message = $message.val();
+    var message = escapeHtml($message.val());
     if (message.length > 0) { 
       $message.val("");
   		sendMessage(message);
@@ -83,6 +83,22 @@ function scrapeUsername() {
 
 function ptagifyMessage(message) {
   return "<p>" + message + "</p>";
+}
+
+
+function escapeHtml(string) {
+  var entityMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;'
+  };
+
+  return String(string).replace(/[&<>"'\/]/g, function(s) {
+    return entityMap[s];
+  });
 }
 
 function ptagifyMember(username) {
